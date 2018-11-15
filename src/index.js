@@ -1,1 +1,2 @@
-import FormContainer from "./js/components/container/FormContainer";
+import App from "./App";
+import style from "./main.css";
