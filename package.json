@@ -1,7 +1,7 @@
 {
   "name": "mosh-herolo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Mosh Herolo Test",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
@@ -9,7 +9,7 @@
     "build": "webpack --mode production"
   },
   "keywords": [],
-  "author": "",
+  "author": "mosh7890",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.1.6",
@@ -26,8 +26,13 @@
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-redux": "^5.1.1",
+    "redux": "^4.0.1",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
+  },
+  "devDependencies": {
+    "redux-devtools": "^3.4.2"
   }
 }
