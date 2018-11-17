@@ -30,7 +30,7 @@ class MainAppContainer extends Component {
     async getMovies() {
         let self = this;
         try {
-            const res = await axios.get('http://www.omdbapi.com/?apikey=b8562389&type=movie&s=avengers');
+            const res = await axios.get('https://www.omdbapi.com/?apikey=b8562389&type=movie&s=avengers');
             for (var i = 0; i < res.data.Search.length; i++) {
                 self.addMovies(res.data.Search[i]);
             }
