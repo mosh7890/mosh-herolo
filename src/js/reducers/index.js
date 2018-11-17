@@ -9,11 +9,11 @@ const rootReducer = (state = initialState, action) => {
         case ADD_MOVIE:
             return {...state, movies: [...state.movies, action.payload]};
         case REMOVE_MOVIE:
-            return {...state, movies: state.movies.filter(movie => movie.id !== action.payload.id)};
+            return {...state, movies: state.movies.filter(movie => movie.imdbID !== action.payload.imdbID)};
         case EDIT_MOVIE:
             return {
                 ...state, movies: state.movies.map(item => {
-                    if (item.id === action.payload.id) {
+                    if (item.imdbID === action.payload.imdbID) {
                         return {...item, ...action.payload}
                     }
                     return item

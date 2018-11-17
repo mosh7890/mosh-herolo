@@ -1,3 +1,4 @@
+import React from "react";
 import store from "../js/store";
 import {addMovie, removeMovie, editMovie} from "../js/actions";
 
