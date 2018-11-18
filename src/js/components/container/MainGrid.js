@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {removeMovie, editMovie, addMovie} from "../../actions";
 import MovieCard from "./MovieCard"
-import MainBottomNav from "./BottomNav"
+import BottomNav from "./BottomNav"
 import {connect} from "react-redux";
 
 const mapStateToProps = state => {
@@ -30,6 +30,17 @@ class MainGrid extends Component {
             genre: '',
             director: '',
             id: 1,
+            titleError: false,
+            titleHelperText: 'Title',
+            yearError: false,
+            yearHelperText: 'Year',
+            runtimeError: false,
+            runtimeHelperText: 'Runtime',
+            genreError: false,
+            genreHelperText: 'Genre',
+            directorError: false,
+            directorHelperText: 'Director',
+            sortUp: 'initial',
         };
         this.openEditMovieModal = this.openEditMovieModal.bind(this);
         this.closeEditMovieModal = this.closeEditMovieModal.bind(this);
@@ -45,6 +56,7 @@ class MainGrid extends Component {
         this.addMovie = this.addMovie.bind(this);
         this.removeConfirmDialogClickOpen = this.removeConfirmDialogClickOpen.bind(this);
         this.removeConfirmDialogClose = this.removeConfirmDialogClose.bind(this);
+        this.sortMovies = this.sortMovies.bind(this);
     }
 
     removeMovie(movie) {
@@ -54,7 +66,25 @@ class MainGrid extends Component {
     }
 
     openEditMovieModal(movie) {
-        this.setState({editMovieModalIsOpen: true, movie: movie});
+        this.setState({
+            editMovieModalIsOpen: true,
+            movie: movie,
+            title: movie.Title,
+            year: movie.Year,
+            runtime: movie.Runtime,
+            genre: movie.Genre,
+            director: movie.Director,
+            titleError: false,
+            titleHelperText: 'Title',
+            yearError: false,
+            yearHelperText: 'Year',
+            runtimeError: false,
+            runtimeHelperText: 'Runtime',
+            genreError: false,
+            genreHelperText: 'Genre',
+            directorError: false,
+            directorHelperText: 'Director',
+        });
     }
 
     closeEditMovieModal() {
@@ -65,43 +95,119 @@ class MainGrid extends Component {
             year: '',
             runtime: '',
             genre: '',
-            director: ''
+            director: '',
+            titleError: false,
+            titleHelperText: 'Title',
+            yearError: false,
+            yearHelperText: 'Year',
+            runtimeError: false,
+            runtimeHelperText: 'Runtime',
+            genreError: false,
+            genreHelperText: 'Genre',
+            directorError: false,
+            directorHelperText: 'Director',
         });
     }
 
     handleTextFieldTitle(e) {
-        this.setState({title: e.target.value});
+        if (e.target.value.length <= 0) {
+            this.setState({titleError: true, titleHelperText: 'Empty Field',});
+        }
+        else {
+            this.setState({title: e.target.value, titleError: false, titleHelperText: 'Title',});
+        }
+        for (var i = 0; i < this.props.movies.length; i++) {
+            if (this.props.movies[i].Title === e.target.value) {
+                if (this.props.movies[i].Title !== this.state.movie.Title) {
+                    this.setState({titleError: true, titleHelperText: 'Title already exists.',});
+                    break;
+                }
+            }
+        }
+    }
+
+    static isValidDate(d) {
+        Date.prototype.valid = function () {
+            return isFinite(this);
+        };
+        d = new Date(d);
+        return d.valid();
     }
 
     handleTextFieldYear(e) {
-        this.setState({year: e.target.value});
+        if (e.target.value.length <= 0) {
+            this.setState({yearError: true, yearHelperText: 'Empty Field',});
+        }
+        else if (!MainGrid.isValidDate(e.target.value)) {
+            this.setState({yearError: true, yearHelperText: 'Invalid Date',});
+        }
+        else {
+            this.setState({year: e.target.value, yearError: false, yearHelperText: 'Year',});
+        }
     }
 
     handleTextFieldRuntime(e) {
-        this.setState({runtime: e.target.value});
+        if (e.target.value.length <= 0) {
+            this.setState({runtimeError: true, runtimeHelperText: 'Empty Field',});
+        }
+        else {
+            this.setState({runtime: e.target.value, runtimeError: false, runtimeHelperText: 'Runtime',});
+        }
     }
 
     handleTextFieldGenre(e) {
-        this.setState({genre: e.target.value});
+        if (e.target.value.length <= 0) {
+            this.setState({genreError: true, genreHelperText: 'Empty Field',});
+        }
+        else {
+            this.setState({genre: e.target.value, genreError: false, genreHelperText: 'Genre',});
+        }
     }
 
     handleTextFieldDirector(e) {
-        this.setState({director: e.target.value});
+        if (e.target.value.length <= 0) {
+            this.setState({directorError: true, directorHelperText: 'Empty Field',});
+        }
+        else {
+            this.setState({director: e.target.value, directorError: false, directorHelperText: 'Director',});
+        }
     }
 
     editMovie(movie) {
-        let editedMovie = movie;
-        editedMovie.Title = this.state.title;
-        editedMovie.Year = this.state.year;
-        editedMovie.Runtime = this.state.runtime;
-        editedMovie.Genre = this.state.genre;
-        editedMovie.Director = this.state.director;
-        this.props.editMovie(editedMovie);
-        this.closeEditMovieModal();
+        if (!this.state.titleError
+            && !this.state.yearError
+            && !this.state.runtimeError
+            && !this.state.genreError
+            && !this.state.directorError) {
+            let editedMovie = movie;
+            let tempTitle = this.state.title.replace(/[^0-9A-Za-z ]/g, "");
+            tempTitle = tempTitle.toLowerCase();
+            tempTitle = MainGrid.toTitleCase(tempTitle);
+            editedMovie.Title = tempTitle;
+            editedMovie.Year = this.state.year;
+            editedMovie.Runtime = this.state.runtime;
+            editedMovie.Genre = this.state.genre;
+            editedMovie.Director = this.state.director;
+            this.props.editMovie(editedMovie);
+            this.closeEditMovieModal();
+        }
     }
 
     openAddMovieModal() {
-        this.setState({addMovieModalIsOpen: true, movie: {}});
+        this.setState({
+            addMovieModalIsOpen: true,
+            movie: {},
+            titleError: true,
+            titleHelperText: 'Title',
+            yearError: true,
+            yearHelperText: 'Year',
+            runtimeError: true,
+            runtimeHelperText: 'Runtime',
+            genreError: true,
+            genreHelperText: 'Genre',
+            directorError: true,
+            directorHelperText: 'Director',
+        });
     }
 
     closeAddMovieModal() {
@@ -112,22 +218,49 @@ class MainGrid extends Component {
             year: '',
             runtime: '',
             genre: '',
-            director: ''
+            director: '',
+            titleError: false,
+            titleHelperText: 'Title',
+            yearError: false,
+            yearHelperText: 'Year',
+            runtimeError: false,
+            runtimeHelperText: 'Runtime',
+            genreError: false,
+            genreHelperText: 'Genre',
+            directorError: false,
+            directorHelperText: 'Director',
         });
     }
 
+    static toTitleCase(phrase) {
+        return phrase
+            .toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    };
+
     addMovie(movie) {
-        let addedMovie = movie;
-        addedMovie.Title = this.state.title;
-        addedMovie.Year = this.state.year;
-        addedMovie.Runtime = this.state.runtime;
-        addedMovie.Genre = this.state.genre;
-        addedMovie.Director = this.state.director;
-        addedMovie.imdbID = this.state.id;
-        addedMovie.Poster = 'https://m.media-amazon.com/images/M/MV5BMTYzNDc5NzY5OF5BMl5BanBnXkFtZTgwMjA0OTUzNjM@._V1_SX300.jpg';
-        this.props.addMovie(addedMovie);
-        this.setState({id: this.state.id++});
-        this.closeAddMovieModal();
+        if (!this.state.titleError
+            && !this.state.yearError
+            && !this.state.runtimeError
+            && !this.state.genreError
+            && !this.state.directorError) {
+            let addedMovie = movie;
+            let tempTitle = this.state.title.replace(/[^0-9A-Za-z ]/g, "");
+            tempTitle = tempTitle.toLowerCase();
+            tempTitle = MainGrid.toTitleCase(tempTitle);
+            addedMovie.Title = tempTitle;
+            addedMovie.Year = this.state.year;
+            addedMovie.Runtime = this.state.runtime;
+            addedMovie.Genre = this.state.genre;
+            addedMovie.Director = this.state.director;
+            addedMovie.imdbID = this.state.id;
+            addedMovie.Poster = 'https://m.media-amazon.com/images/M/MV5BMTYzNDc5NzY5OF5BMl5BanBnXkFtZTgwMjA0OTUzNjM@._V1_SX300.jpg';
+            this.props.addMovie(addedMovie);
+            this.setState({id: this.state.id + 1});
+            this.closeAddMovieModal();
+        }
     }
 
     removeConfirmDialogClickOpen(movie) {
@@ -137,6 +270,18 @@ class MainGrid extends Component {
     removeConfirmDialogClose() {
         this.setState({removeConfirmDialogIsOpen: false});
     };
+
+    sortMovies() {
+        if (this.state.sortUp === 'initial') {
+            this.setState({sortUp: 'up'})
+        }
+        else if (this.state.sortUp === 'up') {
+            this.setState({sortUp: 'down'})
+        }
+        else if (this.state.sortUp === 'down') {
+            this.setState({sortUp: 'up'})
+        }
+    }
 
     render() {
         return (
@@ -162,8 +307,20 @@ class MainGrid extends Component {
                     removeConfirmDialogIsOpen={this.state.removeConfirmDialogIsOpen}
                     removeConfirmDialogClickOpen={this.removeConfirmDialogClickOpen}
                     removeConfirmDialogClose={this.removeConfirmDialogClose}
+                    titleError={this.state.titleError}
+                    titleHelperText={this.state.titleHelperText}
+                    yearError={this.state.yearError}
+                    yearHelperText={this.state.yearHelperText}
+                    runtimeError={this.state.runtimeError}
+                    runtimeHelperText={this.state.runtimeHelperText}
+                    genreError={this.state.genreError}
+                    genreHelperText={this.state.genreHelperText}
+                    directorError={this.state.directorError}
+                    directorHelperText={this.state.directorHelperText}
+                    editDisabled={this.state.editDisabled}
+                    sortUp={this.state.sortUp}
                 />
-                <MainBottomNav
+                <BottomNav
                     {...this.props}
                     addMovieModalIsOpen={this.state.addMovieModalIsOpen}
                     openAddMovieModal={this.openAddMovieModal}
@@ -180,6 +337,18 @@ class MainGrid extends Component {
                     handleTextFieldGenre={this.handleTextFieldGenre}
                     handleTextFieldDirector={this.handleTextFieldDirector}
                     addMovie={this.addMovie}
+                    titleError={this.state.titleError}
+                    titleHelperText={this.state.titleHelperText}
+                    yearError={this.state.yearError}
+                    yearHelperText={this.state.yearHelperText}
+                    runtimeError={this.state.runtimeError}
+                    runtimeHelperText={this.state.runtimeHelperText}
+                    genreError={this.state.genreError}
+                    genreHelperText={this.state.genreHelperText}
+                    directorError={this.state.directorError}
+                    directorHelperText={this.state.directorHelperText}
+                    addDisabled={this.state.addDisabled}
+                    sortMovies={this.sortMovies}
                 />
             </div>
 

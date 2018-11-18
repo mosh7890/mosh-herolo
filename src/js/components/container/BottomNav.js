@@ -4,6 +4,7 @@ import AddMovieModal from './AddMovieModal';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import AddIcon from '@material-ui/icons/Add';
+import SortIcon from '@material-ui/icons/Sort';
 
 
 export default (props) => {
@@ -15,9 +16,10 @@ export default (props) => {
             <BottomNavigation
                 value={0}
                 showLabels
-                onClick={() => props.openAddMovieModal()}
             >
-                <BottomNavigationAction label="ADD MOVIE" icon={<AddIcon/>}/>
+                <BottomNavigationAction label="ADD MOVIE" icon={<AddIcon/>} onClick={() => props.openAddMovieModal()}
+                />
+                <BottomNavigationAction label="SORT" icon={<SortIcon/>} onClick={() => props.sortMovies()}/>
             </BottomNavigation>
         </Container>
     )

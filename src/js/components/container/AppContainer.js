@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {addMovie} from "../../actions";
 import {movie_names} from "../../misc/movie_names"
 import MainGrid from "./MainGrid";
-import MainAppBar from "./MyAppBar";
+import MyAppBar from "./MyAppBar";
 import {connect} from "react-redux";
 
 const axios = require('axios');
@@ -46,7 +46,7 @@ class AppContainer extends Component {
     render() {
         return (
             <div>
-                <MainAppBar/>
+                <MyAppBar/>
                 <MainGrid/>
             </div>
         );

@@ -11,6 +11,13 @@ import Typography from '@material-ui/core/Typography';
 import ConfirmDialog from './ConfirmDialog';
 
 export default (props) => {
+    var movieArray = props.movies;
+    if (props.sortUp === "up") {
+        movieArray.sort((a, b) => (a.Title > b.Title) ? 1 : ((b.Title > a.Title) ? -1 : 0));
+    }
+    else if (props.sortUp === "down") {
+        movieArray.reverse((a, b) => (a.Title > b.Title) ? 1 : ((b.Title > a.Title) ? -1 : 0));
+    }
     return (
         <Container style={{lineHeight: '32px'}}>
             <Row justify="center">
@@ -20,7 +27,7 @@ export default (props) => {
                 <ConfirmDialog
                     {...props}
                 />
-                {props.movies.map((element) => (
+                {movieArray.map((element) => (
                     <Col md={3} key={element.imdbID}>
                         <Card className="Movie Card">
                             <CardActionArea>

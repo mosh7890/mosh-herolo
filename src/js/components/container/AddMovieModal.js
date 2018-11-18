@@ -45,38 +45,45 @@ class AddMovieModal extends Component {
                         <Typography component="p">
                             Add Movie
                         </Typography>
-                        <form className={classes.container}>
+                        {this.props.movie ? <form className={classes.container}>
                             <Input
-                                defaultValue=""
+                                required={true}
+                                defaultValue={this.props.movie.Title}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldTitle}
-                                helperText="Title"
+                                helperText={this.props.titleHelperText}
+                                error={this.props.titleError}
                             />
-                            <Input
-                                defaultValue=""
+                            < Input
+                                required={true}
+                                defaultValue={this.props.movie.Year}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldYear}
-                                helperText="Year"
+                                helperText={this.props.yearHelperText}
+                                error={this.props.yearError}
                             />
                             <Input
-                                defaultValue=""
+                                required={true}
+                                defaultValue={this.props.movie.Runtime}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldRuntime}
-                                helperText="Runtime"
-                            />
+                                helperText={this.props.runtimeHelperText}
+                                error={this.props.runtimeError}/>
                             <Input
-                                defaultValue=""
+                                required={true}
+                                defaultValue={this.props.movie.Genre}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldGenre}
-                                helperText="Genre"
-                            />
+                                helperText={this.props.genreHelperText}
+                                error={this.props.genreError}/>
                             <Input
-                                defaultValue=""
+                                required={true}
+                                defaultValue={this.props.movie.Director}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldDirector}
-                                helperText="Director"
-                            />
-                        </form>
+                                helperText={this.props.directorHelperText}
+                                error={this.props.directorError}/>
+                        </form> : null}
                         <Button size="small" color="primary"
                                 onClick={() => this.props.addMovie(this.props.movie)}>
                             Add
