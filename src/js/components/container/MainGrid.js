@@ -273,13 +273,13 @@ class MainGrid extends Component {
 
     sortMovies() {
         if (this.state.sortUp === 'initial') {
-            this.setState({sortUp: 'up'})
+            this.setState({sortUp: true})
         }
-        else if (this.state.sortUp === 'up') {
-            this.setState({sortUp: 'down'})
+        else if (this.state.sortUp === true) {
+            this.setState({sortUp: false})
         }
-        else if (this.state.sortUp === 'down') {
-            this.setState({sortUp: 'up'})
+        else if (this.state.sortUp === false) {
+            this.setState({sortUp: true})
         }
     }
 
@@ -289,6 +289,7 @@ class MainGrid extends Component {
                 <MovieCard
                     {...this.props}
                     editMovieModalIsOpen={this.state.editMovieModalIsOpen}
+                    addMovieModalIsOpen={this.state.addMovieModalIsOpen}
                     openEditMovieModal={this.openEditMovieModal}
                     closeEditMovieModal={this.closeEditMovieModal}
                     movie={this.state.movie}

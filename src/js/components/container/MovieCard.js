@@ -12,10 +12,10 @@ import ConfirmDialog from './ConfirmDialog';
 
 export default (props) => {
     var movieArray = props.movies;
-    if (props.sortUp === "up") {
+    if (props.sortUp === true && !props.addMovieModalIsOpen && !props.editMovieModalIsOpen) {
         movieArray.sort((a, b) => (a.Title > b.Title) ? 1 : ((b.Title > a.Title) ? -1 : 0));
     }
-    else if (props.sortUp === "down") {
+    else if (props.sortUp === false && !props.addMovieModalIsOpen && !props.editMovieModalIsOpen) {
         movieArray.reverse((a, b) => (a.Title > b.Title) ? 1 : ((b.Title > a.Title) ? -1 : 0));
     }
     return (
