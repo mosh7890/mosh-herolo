@@ -32,7 +32,7 @@ export default (props) => {
             />
             <Row justify="center">
                 {movieArray.map((element) => (
-                    <Col md={3} key={element.imdbID}>
+                    <Col xs={6} sm={6} md={6} lg={3} xl={3} key={element.imdbID}>
                         <Card style={cardStyle}>
                             <CardActionArea>
                                 <CardMedia

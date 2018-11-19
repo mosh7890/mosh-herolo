@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {removeMovie, editMovie, addMovie} from "../../actions";
-import MyAppBar from "./MyAppBar";
+import AppBar_Main from "../appbars/AppBar_Main";
 import Card_Movie from "../cards/Card_Movie"
 import {connect} from "react-redux";
 
@@ -312,7 +312,7 @@ class MainGrid extends Component {
     render() {
         return (
             <div>
-                <MyAppBar
+                <AppBar_Main
                     {...this.props}
                     addMovieModalIsOpen={this.state.addMovieModalIsOpen}
                     openAddMovieModal={this.openAddMovieModal}
