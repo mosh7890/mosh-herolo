@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {removeMovie, editMovie, addMovie} from "../../actions";
-import MovieCard from "./MovieCard"
-import BottomNav from "./BottomNav"
+import MyAppBar from "./MyAppBar";
+import Card_Movie from "../cards/Card_Movie"
 import {connect} from "react-redux";
 
 const mapStateToProps = state => {
@@ -110,19 +110,15 @@ class MainGrid extends Component {
     }
 
     handleTextFieldTitle(e) {
-        if (e.target.value.length <= 0) {
+        let title = e.target.value.toLowerCase();
+        if (title.length <= 0) {
             this.setState({titleError: true, titleHelperText: 'Empty Field',});
         }
-        else {
-            this.setState({title: e.target.value, titleError: false, titleHelperText: 'Title',});
+        else if (this.state.titleError === true) {
+            this.setState({title: title, titleError: false, titleHelperText: 'Title',});
         }
-        for (var i = 0; i < this.props.movies.length; i++) {
-            if (this.props.movies[i].Title === e.target.value) {
-                if (this.props.movies[i].Title !== this.state.movie.Title) {
-                    this.setState({titleError: true, titleHelperText: 'Title already exists.',});
-                    break;
-                }
-            }
+        else {
+            this.setState({title: title,});
         }
     }
 
@@ -135,54 +131,78 @@ class MainGrid extends Component {
     }
 
     handleTextFieldYear(e) {
-        if (e.target.value.length <= 0) {
+        let year = e.target.value;
+        if (year.length <= 0) {
             this.setState({yearError: true, yearHelperText: 'Empty Field',});
         }
-        else if (!MainGrid.isValidDate(e.target.value)) {
+        else if (!MainGrid.isValidDate(year)) {
             this.setState({yearError: true, yearHelperText: 'Invalid Date',});
         }
+        else if (this.state.yearError === true) {
+            this.setState({year: year, yearError: false, yearHelperText: 'Year',});
+        }
         else {
-            this.setState({year: e.target.value, yearError: false, yearHelperText: 'Year',});
+            this.setState({year: year,});
         }
     }
 
     handleTextFieldRuntime(e) {
-        if (e.target.value.length <= 0) {
+        let runtime = e.target.value;
+        if (runtime <= 0) {
             this.setState({runtimeError: true, runtimeHelperText: 'Empty Field',});
         }
+        else if (this.state.runtimeError === true) {
+            this.setState({runtime: runtime, runtimeError: false, runtimeHelperText: 'Runtime',});
+        }
         else {
-            this.setState({runtime: e.target.value, runtimeError: false, runtimeHelperText: 'Runtime',});
+            this.setState({runtime: runtime,});
         }
     }
 
     handleTextFieldGenre(e) {
-        if (e.target.value.length <= 0) {
+        let genre = e.target.value;
+        if (genre <= 0) {
             this.setState({genreError: true, genreHelperText: 'Empty Field',});
         }
+        else if (this.state.genreError === true) {
+            this.setState({genre: genre, genreError: false, genreHelperText: 'Genre',});
+        }
         else {
-            this.setState({genre: e.target.value, genreError: false, genreHelperText: 'Genre',});
+            this.setState({genre: genre,});
         }
     }
 
     handleTextFieldDirector(e) {
-        if (e.target.value.length <= 0) {
+        let director = e.target.value;
+        if (director <= 0) {
             this.setState({directorError: true, directorHelperText: 'Empty Field',});
         }
+        else if (this.state.directorError === true) {
+            this.setState({director: director, directorError: false, directorHelperText: 'Director',});
+        }
         else {
-            this.setState({director: e.target.value, directorError: false, directorHelperText: 'Director',});
+            this.setState({director: director,});
         }
     }
 
     editMovie(movie) {
+        let tempTitle = this.state.title.replace(/[^0-9A-Za-z ]/g, "");
+        tempTitle = tempTitle.toLowerCase();
+        tempTitle = MainGrid.toTitleCase(tempTitle);
+        for (let i = 0; i < this.props.movies.length; i++) {
+            if (this.props.movies[i].Title === tempTitle) {
+                if (this.props.movies[i].Title !== this.state.movie.Title) {
+                    this.setState({title: tempTitle, titleError: true, titleHelperText: 'Title already exists.',});
+                    return null;
+                }
+            }
+        }
         if (!this.state.titleError
             && !this.state.yearError
             && !this.state.runtimeError
             && !this.state.genreError
             && !this.state.directorError) {
             let editedMovie = movie;
-            let tempTitle = this.state.title.replace(/[^0-9A-Za-z ]/g, "");
-            tempTitle = tempTitle.toLowerCase();
-            tempTitle = MainGrid.toTitleCase(tempTitle);
             editedMovie.Title = tempTitle;
             editedMovie.Year = this.state.year;
             editedMovie.Runtime = this.state.runtime;
@@ -241,15 +261,21 @@ class MainGrid extends Component {
     };
 
     addMovie(movie) {
+        let tempTitle = this.state.title.replace(/[^0-9A-Za-z ]/g, "");
+        tempTitle = tempTitle.toLowerCase();
+        tempTitle = MainGrid.toTitleCase(tempTitle);
+        for (let i = 0; i < this.props.movies.length; i++) {
+            if (this.props.movies[i].Title === tempTitle) {
+                this.setState({title: tempTitle, titleError: true, titleHelperText: 'Title already exists.',});
+                return null;
+            }
+        }
         if (!this.state.titleError
             && !this.state.yearError
             && !this.state.runtimeError
             && !this.state.genreError
             && !this.state.directorError) {
             let addedMovie = movie;
-            let tempTitle = this.state.title.replace(/[^0-9A-Za-z ]/g, "");
-            tempTitle = tempTitle.toLowerCase();
-            tempTitle = MainGrid.toTitleCase(tempTitle);
             addedMovie.Title = tempTitle;
             addedMovie.Year = this.state.year;
             addedMovie.Runtime = this.state.runtime;
@@ -286,7 +312,36 @@ class MainGrid extends Component {
     render() {
         return (
             <div>
-                <MovieCard
+                <MyAppBar
+                    {...this.props}
+                    addMovieModalIsOpen={this.state.addMovieModalIsOpen}
+                    openAddMovieModal={this.openAddMovieModal}
+                    closeAddMovieModal={this.closeAddMovieModal}
+                    movie={this.state.movie}
+                    title={this.state.title}
+                    year={this.state.year}
+                    runtime={this.state.runtime}
+                    genre={this.state.genre}
+                    director={this.state.director}
+                    handleTextFieldTitle={this.handleTextFieldTitle}
+                    handleTextFieldYear={this.handleTextFieldYear}
+                    handleTextFieldRuntime={this.handleTextFieldRuntime}
+                    handleTextFieldGenre={this.handleTextFieldGenre}
+                    handleTextFieldDirector={this.handleTextFieldDirector}
+                    addMovie={this.addMovie}
+                    titleError={this.state.titleError}
+                    titleHelperText={this.state.titleHelperText}
+                    yearError={this.state.yearError}
+                    yearHelperText={this.state.yearHelperText}
+                    runtimeError={this.state.runtimeError}
+                    runtimeHelperText={this.state.runtimeHelperText}
+                    genreError={this.state.genreError}
+                    genreHelperText={this.state.genreHelperText}
+                    directorError={this.state.directorError}
+                    directorHelperText={this.state.directorHelperText}
+                    sortMovies={this.sortMovies}
+                />
+                <Card_Movie
                     {...this.props}
                     editMovieModalIsOpen={this.state.editMovieModalIsOpen}
                     addMovieModalIsOpen={this.state.addMovieModalIsOpen}
@@ -318,38 +373,7 @@ class MainGrid extends Component {
                     genreHelperText={this.state.genreHelperText}
                     directorError={this.state.directorError}
                     directorHelperText={this.state.directorHelperText}
-                    editDisabled={this.state.editDisabled}
                     sortUp={this.state.sortUp}
-                />
-                <BottomNav
-                    {...this.props}
-                    addMovieModalIsOpen={this.state.addMovieModalIsOpen}
-                    openAddMovieModal={this.openAddMovieModal}
-                    closeAddMovieModal={this.closeAddMovieModal}
-                    movie={this.state.movie}
-                    title={this.state.title}
-                    year={this.state.year}
-                    runtime={this.state.runtime}
-                    genre={this.state.genre}
-                    director={this.state.director}
-                    handleTextFieldTitle={this.handleTextFieldTitle}
-                    handleTextFieldYear={this.handleTextFieldYear}
-                    handleTextFieldRuntime={this.handleTextFieldRuntime}
-                    handleTextFieldGenre={this.handleTextFieldGenre}
-                    handleTextFieldDirector={this.handleTextFieldDirector}
-                    addMovie={this.addMovie}
-                    titleError={this.state.titleError}
-                    titleHelperText={this.state.titleHelperText}
-                    yearError={this.state.yearError}
-                    yearHelperText={this.state.yearHelperText}
-                    runtimeError={this.state.runtimeError}
-                    runtimeHelperText={this.state.runtimeHelperText}
-                    genreError={this.state.genreError}
-                    genreHelperText={this.state.genreHelperText}
-                    directorError={this.state.directorError}
-                    directorHelperText={this.state.directorHelperText}
-                    addDisabled={this.state.addDisabled}
-                    sortMovies={this.sortMovies}
                 />
             </div>
 

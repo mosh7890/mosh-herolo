@@ -1,38 +1,31 @@
 import React from "react";
-import {withStyles} from "@material-ui/core/styles";
+import Modal_AddMovie from '../modals/Modal_AddMovie';
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import Button from '@material-ui/core/Button';
 
-const styles = {
-    root: {
-        flexGrow: 1,
-        paddingBottom: "10px",
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    center: {
-        margin: "auto",
-    },
-    rightAlign: {
-        margin: "auto",
-    },
-};
-
-function MyAppBar(props) {
-    const {classes} = props;
+export default (props) => {
     return (
-        <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar className={classes.center}>
-                    <Typography variant="headline" color="inherit" className={classes.grow}>
-                        Herolo Movies
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+        <div>
+            <Modal_AddMovie
+                {...props}
+            />
+            <div style={{flexGrow: 1}}>
+                <AppBar position="static" color="default">
+                    <Toolbar>
+                        <Typography variant="headline" color="inherit" style={{flexGrow: 1}}>
+                            Herolo Movies
+                        </Typography>
+                        <Button size="small" color="primary" onClick={() => props.openAddMovieModal()}>
+                            Add Movie
+                        </Button>
+                        <Button size="small" color="primary" onClick={() => props.sortMovies()}>
+                            Sort Movies
+                        </Button>
+                    </Toolbar>
+                </AppBar>
+            </div>
         </div>
     );
 }
-
-export default withStyles(styles)(MyAppBar);

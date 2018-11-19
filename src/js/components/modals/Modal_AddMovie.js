@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import Modal from '@material-ui/core/Modal';
+import CardContent from "@material-ui/core/CardContent/CardContent";
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/TextField';
+import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import Button from '@material-ui/core/Button';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -26,7 +28,7 @@ const styles = theme => ({
     }
 });
 
-class AddMovieModal extends Component {
+class Modal_AddMovie extends Component {
     constructor(props) {
         super(props);
     }
@@ -39,15 +41,18 @@ class AddMovieModal extends Component {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     open={this.props.addMovieModalIsOpen}
-                    onClose={() => this.props.addEditMovieModal()}
+                    onClose={() => this.props.closeAddMovieModal()}
                 >
                     <div style={getModalStyle()} className={classes.paper}>
-                        <Typography component="p">
-                            Add Movie
-                        </Typography>
-                        {this.props.movie ? <form className={classes.container}>
+                        <CardContent style={{textAlign: 'center'}}>
+                            <Typography variant="h6">
+                                Add Movie
+                            </Typography>
+                        </CardContent>
+                        {this.props.movie ? <form style={{textAlign: 'center'}}>
                             <Input
-                                required={true}
+                                margin="normal"
+                                variant="outlined"
                                 defaultValue={this.props.movie.Title}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldTitle}
@@ -55,7 +60,8 @@ class AddMovieModal extends Component {
                                 error={this.props.titleError}
                             />
                             < Input
-                                required={true}
+                                margin="normal"
+                                variant="outlined"
                                 defaultValue={this.props.movie.Year}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldYear}
@@ -63,35 +69,40 @@ class AddMovieModal extends Component {
                                 error={this.props.yearError}
                             />
                             <Input
-                                required={true}
+                                margin="normal"
+                                variant="outlined"
                                 defaultValue={this.props.movie.Runtime}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldRuntime}
                                 helperText={this.props.runtimeHelperText}
                                 error={this.props.runtimeError}/>
                             <Input
-                                required={true}
+                                margin="normal"
+                                variant="outlined"
                                 defaultValue={this.props.movie.Genre}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldGenre}
                                 helperText={this.props.genreHelperText}
                                 error={this.props.genreError}/>
                             <Input
-                                required={true}
+                                margin="normal"
+                                variant="outlined"
                                 defaultValue={this.props.movie.Director}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldDirector}
                                 helperText={this.props.directorHelperText}
                                 error={this.props.directorError}/>
                         </form> : null}
-                        <Button size="small" color="primary"
-                                onClick={() => this.props.addMovie(this.props.movie)}>
-                            Add
-                        </Button>
-                        <Button size="small" color="primary"
-                                onClick={() => this.props.closeAddMovieModal()}>
-                            Cancel
-                        </Button>
+                        <DialogActions style={{justifyContent: 'center'}}>
+                            <Button size="small" color="primary"
+                                    onClick={() => this.props.addMovie(this.props.movie)}>
+                                Add
+                            </Button>
+                            <Button size="small" color="primary"
+                                    onClick={() => this.props.closeAddMovieModal()}>
+                                Cancel
+                            </Button>
+                        </DialogActions>
                     </div>
                 </Modal>
             </div>
@@ -99,7 +110,7 @@ class AddMovieModal extends Component {
     }
 }
 
-AddMovieModal = withStyles(styles)(AddMovieModal);
+Modal_AddMovie = withStyles(styles)(Modal_AddMovie);
 
-export default AddMovieModal;
+export default Modal_AddMovie;
 

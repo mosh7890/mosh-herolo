@@ -14,7 +14,7 @@ export default (props) => {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">{"Delete Movie?"}</DialogTitle>
-                <DialogActions>
+                <DialogActions style={{justifyContent: 'center'}}>
                     <Button onClick={() => props.removeConfirmDialogClose()} color="primary">
                         Cancel
                     </Button>

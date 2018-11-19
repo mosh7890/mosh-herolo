@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {addMovie} from "../../actions";
 import {movie_names} from "../../misc/movie_names"
 import MainGrid from "./MainGrid";
-import MyAppBar from "./MyAppBar";
 import {connect} from "react-redux";
 
 const axios = require('axios');
@@ -28,7 +27,7 @@ class AppContainer extends Component {
     }
 
     async getMovies() {
-        for (var i = 0; i < movie_names.length; i++) {
+        for (let i = 0; i < movie_names.length; i++) {
             let self = this;
             try {
                 const res = await axios.get(`https://www.omdbapi.com/?apikey=b8562389&type=movie&t=${movie_names[i]}`);
@@ -45,8 +44,7 @@ class AppContainer extends Component {
 
     render() {
         return (
-            <div>
-                <MyAppBar/>
+            <div style={{backgroundColor: "black"}}>
                 <MainGrid/>
             </div>
         );

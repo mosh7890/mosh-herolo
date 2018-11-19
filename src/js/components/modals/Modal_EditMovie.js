@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import Modal from '@material-ui/core/Modal';
+import CardContent from "@material-ui/core/CardContent/CardContent";
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/TextField';
+import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import Button from '@material-ui/core/Button';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -26,7 +28,7 @@ const styles = theme => ({
     }
 });
 
-class EditMovieModal extends Component {
+class Modal_EditMovie extends Component {
     constructor(props) {
         super(props);
     }
@@ -42,12 +44,15 @@ class EditMovieModal extends Component {
                     onClose={() => this.props.closeEditMovieModal()}
                 >
                     <div style={getModalStyle()} className={classes.paper}>
-                        <Typography component="p">
-                            Edit Movie
-                        </Typography>
-                        {this.props.movie ? <form className={classes.container}>
+                        <CardContent style={{textAlign: 'center'}}>
+                            <Typography variant="h6">
+                                Edit Movie
+                            </Typography>
+                        </CardContent>
+                        {this.props.movie ? <form style={{textAlign: 'center'}}>
                             <Input
-                                required={true}
+                                margin="normal"
+                                variant="outlined"
                                 defaultValue={this.props.movie.Title}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldTitle}
@@ -55,7 +60,8 @@ class EditMovieModal extends Component {
                                 error={this.props.titleError}
                             />
                             < Input
-                                required={true}
+                                margin="normal"
+                                variant="outlined"
                                 defaultValue={this.props.movie.Year}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldYear}
@@ -63,35 +69,40 @@ class EditMovieModal extends Component {
                                 error={this.props.yearError}
                             />
                             <Input
-                                required={true}
+                                margin="normal"
+                                variant="outlined"
                                 defaultValue={this.props.movie.Runtime}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldRuntime}
                                 helperText={this.props.runtimeHelperText}
                                 error={this.props.runtimeError}/>
                             <Input
-                                required={true}
+                                margin="normal"
+                                variant="outlined"
                                 defaultValue={this.props.movie.Genre}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldGenre}
                                 helperText={this.props.genreHelperText}
                                 error={this.props.genreError}/>
                             <Input
-                                required={true}
+                                margin="normal"
+                                variant="outlined"
                                 defaultValue={this.props.movie.Director}
                                 className={classes.input}
                                 onChange={this.props.handleTextFieldDirector}
                                 helperText={this.props.directorHelperText}
                                 error={this.props.directorError}/>
                         </form> : null}
-                        <Button size="small" color="primary"
-                                onClick={() => this.props.editMovie(this.props.movie)}>
-                            Edit
-                        </Button>
-                        <Button size="small" color="primary"
-                                onClick={() => this.props.closeEditMovieModal()}>
-                            Cancel
-                        </Button>
+                        <DialogActions style={{justifyContent: 'center'}}>
+                            <Button size="small" color="primary"
+                                    onClick={() => this.props.editMovie(this.props.movie)}>
+                                Edit
+                            </Button>
+                            <Button size="small" color="primary"
+                                    onClick={() => this.props.closeEditMovieModal()}>
+                                Cancel
+                            </Button>
+                        </DialogActions>
                     </div>
                 </Modal>
             </div>
@@ -99,7 +110,7 @@ class EditMovieModal extends Component {
     }
 }
 
-EditMovieModal = withStyles(styles)(EditMovieModal);
+Modal_EditMovie = withStyles(styles)(Modal_EditMovie);
 
-export default EditMovieModal;
+export default Modal_EditMovie;
 
