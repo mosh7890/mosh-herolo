@@ -1,9 +1,12 @@
 const express = require('express');
+const compression = require('compression');
 const favicon = require('express-favicon');
+
 const path = require('path');
 const port = process.env.PORT || 8080;
 const app = express();
 
+app.use(compression());
 app.use(favicon(__dirname + '/dist/mosh.ico'));
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'dist')));
