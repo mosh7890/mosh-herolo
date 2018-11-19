@@ -17,7 +17,7 @@ export default (props) => {
                 <AppBar position="fixed" color="default">
                     <Toolbar>
                         <Typography variant="headline" color="inherit" style={{flexGrow: 1}}>
-                            Herolo Movies
+                            Herolo Cinema
                         </Typography>
                         <Button size="small" color="primary" onClick={() => props.openAddMovieModal()}>
                             <LibraryAdd/>
