@@ -23,7 +23,7 @@ export default (props) => {
         movieArray.reverse((a, b) => (a.Title > b.Title) ? 1 : ((b.Title > a.Title) ? -1 : 0));
     }
     return (
-        <Container style={{paddingTop: "5px"}}>
+        <Container style={{paddingTop: "75px"}}>
             <Modal_EditMovie
                 {...props}
             />

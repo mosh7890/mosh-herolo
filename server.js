@@ -7,7 +7,7 @@ const port = process.env.PORT || 8080;
 const app = express();
 
 app.use(compression());
-app.use(favicon(__dirname + '/dist/mosh.ico'));
+app.use(favicon(path.join(__dirname, 'dist/m.png')));
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'dist')));
 
