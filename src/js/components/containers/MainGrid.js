@@ -9,6 +9,7 @@ class MainGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            sort: false,
             sortUp: 'initial',
             movie: null,
             movieModalIsOpen: false,
@@ -17,6 +18,7 @@ class MainGrid extends Component {
             id: 1,
         };
         this.sortMovies = this.sortMovies.bind(this);
+        this.sortOnOff = this.sortOnOff.bind(this);
         this.openMovieModal = this.openMovieModal.bind(this);
         this.closeMovieModal = this.closeMovieModal.bind(this);
         this.movieAction = this.movieAction.bind(this);
@@ -27,12 +29,17 @@ class MainGrid extends Component {
 
     sortMovies() {
         if (this.state.sortUp === 'initial') {
-            this.setState({sortUp: true})
+            this.setState({sortUp: true});
         } else if (this.state.sortUp === true) {
-            this.setState({sortUp: false})
+            this.setState({sortUp: false});
         } else if (this.state.sortUp === false) {
-            this.setState({sortUp: true})
+            this.setState({sortUp: true});
         }
+        this.setState({sort: !this.state.sort});
+    }
+
+    sortOnOff() {
+        this.setState({sort: !this.state.sort});
     }
 
     openMovieModal(modalType, movie = {}) {
@@ -97,10 +104,12 @@ class MainGrid extends Component {
                 />
                 <Card_Movie
                     {...this.props}
+                    sort={this.state.sort}
                     sortUp={this.state.sortUp}
                     movie={this.state.movie}
                     movieModalIsOpen={this.state.movieModalIsOpen}
                     removeConfirmDialogIsOpen={this.state.removeConfirmDialogIsOpen}
+                    sortOnOff={this.sortOnOff}
                     openMovieModal={this.openMovieModal}
                     removeConfirmDialogClickOpen={this.removeConfirmDialogClickOpen}
                     removeConfirmDialogClose={this.removeConfirmDialogClose}

@@ -12,10 +12,12 @@ import Typography from '@material-ui/core/Typography';
 export default (props) => {
     let movieArray = props.movies;
 
-    if (props.sortUp === true && !props.movieModalIsOpen) {
+    if (props.sortUp === true && props.sort && !props.movieModalIsOpen) {
         movieArray.sort((a, b) => (a.Title > b.Title) ? 1 : ((b.Title > a.Title) ? -1 : 0));
-    } else if (props.sortUp === false && !props.movieModalIsOpen) {
+        props.sortOnOff();
+    } else if (props.sortUp === false && props.sort && !props.movieModalIsOpen) {
         movieArray.sort((a, b) => (b.Title > a.Title) ? 1 : ((a.Title > b.Title) ? -1 : 0));
+        props.sortOnOff();
     }
 
     return (
